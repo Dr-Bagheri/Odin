@@ -58,6 +58,7 @@ products.forEach((product) => {
     `;
 
 });
+updateCartQuantity();
 
 function updateCartQuantity() {
 
