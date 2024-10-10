@@ -1,11 +1,13 @@
 const express = require('express');
 const app = express();
+const userRoutes = require('./routes/users');
+const postRoutes = require('./routes/posts');
+const commentRoutes = require('./routes/comments');
 
-app.use(express.json()); // Middleware to parse JSON bodies
-
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+app.use(express.json());
+app.use('/users', userRoutes);
+app.use('/posts', postRoutes);
+app.use('/comments', commentRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
