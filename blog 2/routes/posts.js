@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 const postsController = require('../controllers/postsController');
 
-router.get('/', postsController.getAllPosts);
-router.post('/', postsController.createPost);
-router.get('/:id', postsController.getPostById);
-router.put('/:id', postsController.updatePost);
-router.delete('/:id', postsController.deletePost);
+router.post('/', passport.authenticate('jwt', { session: false }), postsController.createPost);
+router.put('/:id', passport.authenticate('jwt', { session: false }), postsController.updatePost);
+router.delete('/:id', passport.authenticate('jwt', { session: false }), postsController.deletePost);
+
+router.post('/:postId', passport.authenticate('jwt', { session: false }), commentsController.addCommentToPost);
+router.delete('/:commentId', passport.authenticate('jwt', { session: false }), commentsController.deleteComment);
 
 module.exports = router;
