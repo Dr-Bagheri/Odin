@@ -17,5 +17,5 @@ export class ObjectManipulator<T> {
 
     public getObject(): T {
         return this.obj;
-    }
+    } 
 }
