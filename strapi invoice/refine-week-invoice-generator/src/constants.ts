@@ -1,2 +1,2 @@
-export const API_URL = "https://api.strapi-invoice.refine.dev";
-export const TOKEN_KEY = "strapi-jwt-token";
+export const API_URL = "http://localhost:3000";
+export const TOKEN_KEY = "20a45c69932d67584157e88f87bd7290224c3418e7f575a24b30fa844d60247c91cff562f76dae6d4da2f0ad511643a0ea46c29bfba736e83f56fa8c74fefd2ed53a3af1e4a3d25d7be116eee1cbeba1c61aeb60be83bbfdf12f87c045a46d5ccba545ed55102a7c016cd94fa1634b37406a27f74ebf7dc54a9a02cbb6cffe75";
