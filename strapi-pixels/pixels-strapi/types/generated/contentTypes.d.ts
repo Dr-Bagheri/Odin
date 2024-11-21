@@ -369,6 +369,114 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCanvasesCanvases extends Struct.CollectionTypeSchema {
+  collectionName: 'canvase';
+  info: {
+    description: '';
+    displayName: 'canvases';
+    pluralName: 'canvase';
+    singularName: 'canvases';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    height: Schema.Attribute.Integer;
+    is_featured: Schema.Attribute.Boolean;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::canvases.canvases'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    pixels: Schema.Attribute.Relation<'oneToMany', 'api::pixels.pixels'>;
+    public_user: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::public-users.public-users'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    width: Schema.Attribute.Integer;
+  };
+}
+
+export interface ApiPixelsPixels extends Struct.CollectionTypeSchema {
+  collectionName: 'pixel';
+  info: {
+    description: '';
+    displayName: 'pixels';
+    pluralName: 'pixel';
+    singularName: 'pixels';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    canvase: Schema.Attribute.Relation<'oneToOne', 'api::canvases.canvases'>;
+    color: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::pixels.pixels'
+    > &
+      Schema.Attribute.Private;
+    public_user: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::public-users.public-users'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    x: Schema.Attribute.Integer;
+    y: Schema.Attribute.Integer;
+  };
+}
+
+export interface ApiPublicUsersPublicUsers extends Struct.CollectionTypeSchema {
+  collectionName: 'public_user';
+  info: {
+    description: '';
+    displayName: 'public.users';
+    pluralName: 'public-user';
+    singularName: 'public-users';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    avatar_url: Schema.Attribute.String;
+    canvases: Schema.Attribute.Relation<'oneToMany', 'api::canvases.canvases'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    email: Schema.Attribute.Email;
+    full_name: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::public-users.public-users'
+    > &
+      Schema.Attribute.Private;
+    pixels: Schema.Attribute.Relation<'oneToMany', 'api::pixels.pixels'>;
+    publishedAt: Schema.Attribute.DateTime;
+    role: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    username: Schema.Attribute.String;
+  };
+}
+
 export interface PluginContentReleasesRelease
   extends Struct.CollectionTypeSchema {
   collectionName: 'strapi_releases';
@@ -878,6 +986,9 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::canvases.canvases': ApiCanvasesCanvases;
+      'api::pixels.pixels': ApiPixelsPixels;
+      'api::public-users.public-users': ApiPublicUsersPublicUsers;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
