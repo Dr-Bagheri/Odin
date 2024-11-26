@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pixels",
+  "info": {
+    "singularName": "pixel",
+    "pluralName": "pixels",
+    "displayName": "pixels",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "x": {
+      "type": "integer"
+    },
+    "y": {
+      "type": "integer"
+    },
+    "color": {
+      "type": "string"
+    },
+    "public_user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::public-user.public-user"
+    },
+    "user_id": {
+      "type": "string"
+    },
+    "canvas_id": {
+      "type": "string"
+    },
+    "canvase": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::canvas.canvas"
+    }
+  }
+}

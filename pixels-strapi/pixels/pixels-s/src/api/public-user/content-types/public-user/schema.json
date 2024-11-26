@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "public_users",
+  "info": {
+    "singularName": "public-user",
+    "pluralName": "public-users",
+    "displayName": "public.users",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "username": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "full_name": {
+      "type": "string"
+    },
+    "avatar_url": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string"
+    },
+    "canvases": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::canvas.canvas"
+    },
+    "pixels": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::pixel.pixel"
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "canvases",
+  "info": {
+    "singularName": "canvas",
+    "pluralName": "canvases",
+    "displayName": "canvases",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "height": {
+      "type": "integer"
+    },
+    "width": {
+      "type": "integer"
+    },
+    "is_featured": {
+      "type": "boolean"
+    },
+    "rndName": {
+      "type": "string"
+    },
+    "user_id": {
+      "type": "string"
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "pixels": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::pixel.pixel"
+    }
+  }
+}
