@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography } from "antd";
-
-import type { Pixel, Canvas } from "../../types";
+import type { Canvas } from "../../types/canvas";
+import type { Pixel } from "../../types/pixel";
 import { DEFAULT_SCALE, PIXEL_SIZE } from "../../utility/constants";
 
 const { Text } = Typography;

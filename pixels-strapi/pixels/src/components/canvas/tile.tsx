@@ -3,7 +3,7 @@ import { Link } from "@refinedev/core";
 import { Skeleton } from "antd";
 import { CanvasItem, DisplayCanvas } from "./index";
 import { Contributors } from "../../components/avatar";
-import type { Canvas } from "../../types";
+import type { Canvas } from "../../types/canvas";
 
 type CanvasTileProps = {
   canvas: Canvas;

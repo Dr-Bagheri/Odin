@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import io from "socket.io-client";
+import type { Socket } from "socket.io-client";
 import {
   useCreate,
   useGetIdentity,
@@ -6,6 +8,7 @@ import {
   useShow,
   useParsed,
   useIsAuthenticated,
+  useList,
 } from "@refinedev/core";
 import { useModal } from "@refinedev/antd";
 
@@ -16,7 +19,8 @@ import { CanvasItem, DisplayCanvas } from "../../components/canvas";
 import { ColorSelect } from "../../components/color-select";
 import { AvatarPanel } from "../../components/avatar";
 import type { colors } from "../../utility";
-import type { Canvas } from "../../types";
+import type { Canvas } from "../../types/canvas";
+import type { Pixel, PixelChange, LiveEvent } from "../../types";
 import { LogList } from "../../components/logs";
 
 const { Title } = Typography;
@@ -46,24 +50,68 @@ export const CanvasShow: React.FC = () => {
   });
   const { list, push } = useNavigation();
 
-  const onSubmit = (x: number, y: number) => {
-    if (!authenticated) {
-      if (pathname) {
-        return push(`/login?to=${encodeURIComponent(pathname)}`);
+  const socketRef = useRef<ReturnType<typeof io> | null>(null);
+  const { data: pixelsData } = useList<Pixel>({
+    resource: "pixels",
+    filters: [
+      {
+        field: "canvas_id",
+        operator: "eq",
+        value: canvas?.id,
+      },
+    ],
+    queryOptions: {
+      enabled: !!canvas?.id,
+    },
+  });
+
+  useEffect(() => {
+    if (!canvas?.id) return;
+
+    // Connect to WebSocket server
+    socketRef.current = io('http://localhost:2929', {
+      path: '/ws',
+      transports: ['websocket']
+    });
+
+    // Join canvas-specific room
+    socketRef.current.emit('join_canvas', canvas.id);
+
+    // Listen for pixel updates in this canvas
+    socketRef.current.on('pixel_updated', () => {
+      window.location.reload(); // Force refresh when any pixel is updated
+    });
+
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.emit('leave_canvas', canvas.id);
+        socketRef.current.disconnect();
       }
+    };
+  }, [canvas?.id]); // Reconnect when canvas changes
 
-      return push("/login");
-    }
+  const pixels = pixelsData?.data || [];
 
-    if (typeof x === "number" && typeof y === "number" && canvas?.documentId) {
+  const onSubmit = (x: number, y: number) => {
+    if (!authenticated || !identity?.id) return;
+
+    if (typeof x === "number" && typeof y === "number" && canvas?.id) {
+      const pixelData = {
+        x,
+        y,
+        color,
+        canvas_id: String(canvas.id),
+        user_id: String(identity.id)
+      };
+
       mutate({
-        values: {
-          x,
-          y,
-          color,
-          canvas_id: String(canvas?.id),
-          user_id: canvas?.user_id,
-        },
+        values: pixelData,
+        successNotification: false,
+      }, {
+        onSuccess: () => {
+          // Notify all clients viewing this canvas about the update
+          socketRef.current?.emit('pixel_update', { canvasId: canvas.id });
+        }
       });
     }
   };

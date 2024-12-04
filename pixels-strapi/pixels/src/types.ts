@@ -13,3 +13,14 @@ export interface Pixel {
     avatar_url?: string;
   };
 }
+
+export interface PixelChange {
+  type: 'created' | 'updated';
+  payload: Pixel;
+}
+
+export interface LiveEvent {
+  type: 'created' | 'updated' | 'deleted';
+  resource: string;
+  payload: any;
+}

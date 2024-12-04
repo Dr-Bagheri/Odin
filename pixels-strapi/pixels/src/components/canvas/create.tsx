@@ -10,7 +10,7 @@ import {
 } from "antd";
 
 import { getRandomName, DEFAULT_CANVAS_SIZE } from "../../utility";
-import type { User } from "../../types";
+import type { User } from "../../types/user";
 
 type CreateCanvasProps = {
   modalProps: ModalProps;
