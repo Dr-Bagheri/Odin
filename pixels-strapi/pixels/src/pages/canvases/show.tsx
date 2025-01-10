@@ -51,11 +51,11 @@ export const CanvasShow: React.FC = () => {
   const { list, push } = useNavigation();
 
   const socketRef = useRef<ReturnType<typeof io> | null>(null);
-  const { data: pixelsData } = useList<Pixel>({
+  const { data: pixelsData, refetch } = useList<Pixel>({
     resource: "pixels",
     filters: [
       {
-        field: "canvas_id",
+        field: "canvas.id",
         operator: "eq",
         value: canvas?.id,
       },
@@ -79,7 +79,7 @@ export const CanvasShow: React.FC = () => {
 
     // Listen for pixel updates in this canvas
     socketRef.current.on('pixel_updated', () => {
-      window.location.reload(); // Force refresh when any pixel is updated
+      refetch(); // Refetch the data instead of reloading the page
     });
 
     return () => {
@@ -88,7 +88,7 @@ export const CanvasShow: React.FC = () => {
         socketRef.current.disconnect();
       }
     };
-  }, [canvas?.id]); // Reconnect when canvas changes
+  }, [canvas?.id, refetch]); // Reconnect when canvas changes
 
   const pixels = pixelsData?.data || [];
 
